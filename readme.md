@@ -1,4 +1,4 @@
-## go-redisgraph
+## redisgraph
 
 This package alows you to use redis as a graph database.
 
@@ -6,7 +6,7 @@ This package alows you to use redis as a graph database.
 
 To install the package, use the following:
 
-	go get - u github.com/johnfogh/redisgraph/...
+	go get -u github.com/johnfogh/redisgraph/...
 
 
 ### RelateKeys
@@ -16,18 +16,17 @@ A redis set will be created (or updated) for each object provided `key.related`
 stored as members.
 
   example:
+
     ...
     Obj1.key = "foo"
     Obj2.key = "bar"
     ...
     RelateKeys( Obj1 , Obj2 )
 
-    will create two sets in redis:
+will create two sets in redis:
 
     foo.related { bar }
     bar.related { foo }
-
-
 
 ### RelateProperties
 
