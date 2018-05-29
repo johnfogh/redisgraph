@@ -6,33 +6,34 @@ This package alows you to use redis as a graph database.
 
 To install the package, use the following:
 
-	go get -u github.com/johnfogh/redisgraph/...
+      go get -u github.com/johnfogh/redisgraph/...
 
+### Examples
 
-### RelateKeys
+The tests provide more concrete examples of how this package works.
 
-A redis set will be created (or updated) for each object provided `key.related`
-(where key represents the object's original key), and all of the other objects keys will be
-stored as members.
+### General usage
 
-  example:
+Essentially, this package works by creating a redis set named `key.related`
+where `key` represents the original key. The members within this set are all of
+the related keys.
 
-    ...
-    Obj1.key = "foo"
-    Obj2.key = "bar"
-    ...
-    RelateKeys( Obj1 , Obj2 )
+#### RelateKeys
 
-will create two sets in redis:
+Forces a relation between between the provided keys.
 
-    foo.related { bar }
-    bar.related { foo }
-
-### RelateProperties
+#### RelateProperties
 
 Examines all of the provided objects, and if any two objects have the same
-attribute value then the keys will be related.
+attribute value then the keys will be related. The `redisgraph.Data` interface
+expects the objects to implement an `Attributes()` method that returns a
+`map[string]interface{}`.
 
-### RelateToKey
+#### RelateObjects
 
-Relates all objects to the specified key.
+Relates all provided objects to the specified key.
+
+#### CommonRelatives
+
+Examines all of the provided objects, and returns a `[]string` containing the
+keys shared by all of the objects.

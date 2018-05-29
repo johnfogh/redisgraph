@@ -44,11 +44,21 @@ func RelateProperties(Redis *redis.Client, matchAttributes []string, objects ...
 	}
 }
 
-// RelateToKey - relates all objects to an explicit key.
+// RelateToKey - relates all proivded objects to an explicit key.
 func RelateToKey(Redis *redis.Client, key string, objects ...Data) {
 	keys := GetKeys(objects...)
 	keys = append(keys, key)
 	RelateKeys(Redis, keys...)
+}
+
+// CommonRelatives - returns all provided objects that share a relative.
+func CommonRelatives(Redis *redis.Client, objects ...Data) (common []string) {
+	keys := GetKeys(objects...)
+	for index, k := range keys {
+		keys[index] = k + ".related"
+	}
+	common, _ = Redis.SInter(keys...).Result()
+	return
 }
 
 // GetKeys - returns all of the object keys.

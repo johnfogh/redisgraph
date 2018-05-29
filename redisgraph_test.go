@@ -125,3 +125,14 @@ func TestRelateToKey(t *testing.T) {
 	hasMember(t, "baz.related", "bar", true)
 	Redis.Del("test.related", "foo.related", "bar.related", "baz.related")
 }
+
+func TestCommonRelatives(t *testing.T) {
+	foo := NewSampleData("foo")
+	bar := NewSampleData("bar")
+	baz := NewSampleData("baz")
+	RelateKeys(Redis, foo.key, baz.key)
+	RelateKeys(Redis, bar.key, baz.key)
+	common := CommonRelatives(Redis, foo, bar)
+	assert.Equal(t, "baz", common[0])
+	Redis.Del("foo.related", "bar.related", "baz.related")
+}
